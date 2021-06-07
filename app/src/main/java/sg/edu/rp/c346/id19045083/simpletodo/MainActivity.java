@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
                         btnAdd.setEnabled(false);
                         btnDelete.setEnabled(true);
 
+                        // Check the size of arrayList to enable/disable delete button
                         if (alToDo.size()==0){
                             Toast.makeText(MainActivity.this, "You don't have any task to remove", Toast.LENGTH_LONG).show();
                             btnDelete.setClickable(false);
@@ -91,19 +92,29 @@ public class MainActivity extends AppCompatActivity {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int input = Integer.parseInt(etInput.getText().toString());
 
-                if (alToDo.size()==0){
-                    Toast.makeText(MainActivity.this, "You don't have any task to remove", Toast.LENGTH_LONG).show();
-                    btnDelete.setClickable(false);
+                // Check input cannot be empty
+                if (etInput.getText().toString().isEmpty()){
+                    Toast.makeText(MainActivity.this, "Input cannot be empty", Toast.LENGTH_SHORT).show();
                 } else {
-                    btnDelete.setClickable(true);
-                    if (input < alToDo.size() && !etInput.getText().toString().isEmpty()){
-                        alToDo.remove(input);
-                    } else if (input > alToDo.size()) {
-                        Toast.makeText(MainActivity.this, "Wrong index number", Toast.LENGTH_SHORT).show();
+                    int input = Integer.parseInt(etInput.getText().toString());
+
+                    // Check arrayList cannot be empty
+                    if (alToDo.size()==0){
+                        Toast.makeText(MainActivity.this, "You don't have any task to remove", Toast.LENGTH_LONG).show();
+                        btnDelete.setClickable(false);
+                    } else {
+                        btnDelete.setClickable(true);
+
+                        // Check input is within the size of the arrayList
+                        if (input < alToDo.size()){
+                            alToDo.remove(input);
+                        } else {
+                            Toast.makeText(MainActivity.this, "Wrong index number", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
+
                 aaToDo.notifyDataSetChanged();
                 etInput.setText("");
             }
